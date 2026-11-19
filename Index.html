@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>For You ❤️</title>
 
 <style>
@@ -18,17 +19,19 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow-x: hidden;
     font-family: 'Segoe UI', sans-serif;
     background: linear-gradient(135deg, #ff758c, #ff7eb3, #c471ed);
+    padding: 20px;
 }
 
 /* Floating Hearts */
+
 .heart {
     position: fixed;
     bottom: -50px;
     color: white;
-    animation: float 7s linear infinite;
+    animation: float 7s linear forwards;
     opacity: 0.7;
     pointer-events: none;
 }
@@ -38,7 +41,11 @@ body {
         transform: translateY(0) rotate(0deg);
         opacity: 0;
     }
-    20% { opacity: 0.8; }
+
+    20% {
+        opacity: 0.8;
+    }
+
     100% {
         transform: translateY(-110vh) rotate(360deg);
         opacity: 0;
@@ -46,13 +53,14 @@ body {
 }
 
 /* Main Card */
+
 .card {
-    width: 90%;
+    width: 100%;
     max-width: 430px;
     padding: 40px 25px;
     text-align: center;
     border-radius: 30px;
-    background: rgba(255,255,255,0.92);
+    background: rgba(255,255,255,0.94);
     box-shadow: 0 20px 60px rgba(90,0,50,0.25);
     animation: appear 1s ease;
     z-index: 2;
@@ -63,28 +71,36 @@ body {
         opacity: 0;
         transform: scale(0.5) translateY(40px);
     }
+
     to {
         opacity: 1;
         transform: scale(1) translateY(0);
     }
 }
 
-/* Heartbeat */
+/* Main Heart */
+
 .big-heart {
     font-size: 75px;
     animation: heartbeat 1.2s infinite;
 }
 
 @keyframes heartbeat {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.2); }
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
 }
 
 /* Text */
+
 h1 {
     color: #ff3d75;
     margin: 15px 0;
-    font-size: 30px;
+    font-size: 32px;
 }
 
 p {
@@ -94,13 +110,14 @@ p {
 }
 
 .question {
-    font-size: 23px;
+    font-size: 24px;
     font-weight: bold;
     color: #e83e72;
     margin: 25px 0;
 }
 
 /* Buttons */
+
 .buttons {
     display: flex;
     justify-content: center;
@@ -137,7 +154,8 @@ button {
     transform: rotate(-8deg);
 }
 
-/* Final Message */
+/* Celebration */
+
 #result {
     display: none;
     margin-top: 25px;
@@ -150,20 +168,43 @@ button {
     margin-bottom: 12px;
 }
 
-#result .love {
+.love {
     font-size: 65px;
     animation: heartbeat 1s infinite;
 }
+
+/* Notification */
+
+#notification {
+    display: none;
+    margin-top: 20px;
+    padding: 12px;
+    border-radius: 20px;
+    background: #ffe4ec;
+    color: #e83e72;
+    font-size: 13px;
+    font-weight: bold;
+    animation: appear 0.7s ease;
+}
+
+/* Footer */
 
 .small {
     font-size: 13px;
     color: #aaa;
     margin-top: 25px;
 }
+
 </style>
 </head>
 
 <body>
+
+<!-- Floating Hearts Container -->
+
+<div id="hearts"></div>
+
+<!-- Main Proposal Card -->
 
 <div class="card">
 
@@ -175,8 +216,11 @@ button {
         I don't know how to explain my feelings,
         but every time I see you, my world
         becomes a little more beautiful. 💕
+
         <br><br>
+
         You make my ordinary days special.
+
         And today, I have one little question...
     </p>
 
@@ -184,32 +228,48 @@ button {
         Do You Love Me? 🥺❤️
     </div>
 
+    <!-- YES / NO Buttons -->
+
     <div class="buttons" id="buttons">
 
         <button id="yes" onclick="sayYes()">
             YES 💖
         </button>
 
-        <button id="no" onclick="sayYes()">
+        <button id="no" onclick="sayNo()">
             NO 🙈
         </button>
 
     </div>
 
+    <!-- Celebration Message -->
+
     <div id="result">
 
         <div class="love">💞</div>
 
-        <h2>Yaaaaay!!! ❤️</h2>
+        <h2>Yaaay! You Made It! ❤️</h2>
 
         <p>
-            I knew it! 😍<br>
+            I knew it! 😍
+
+            <br><br>
+
             You just made me the happiest person
             in the world!
+
             <br><br>
+
             Forever starts with YOU! 💍
         </p>
 
+    </div>
+
+    <!-- Small Notification -->
+
+    <div id="notification">
+        Yaay! You clicked Yes.
+        I know you love me 😉
     </div>
 
     <div class="small">
@@ -220,16 +280,18 @@ button {
 
 <script>
 
-// Floating Hearts Animation
+// FLOATING HEARTS ANIMATION
 
 function createHeart() {
 
     const heart = document.createElement("div");
 
     heart.className = "heart";
+
     heart.innerHTML = "❤️";
 
-    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.left =
+        Math.random() * 100 + "vw";
 
     heart.style.fontSize =
         (15 + Math.random() * 30) + "px";
@@ -248,18 +310,15 @@ function createHeart() {
 setInterval(createHeart, 350);
 
 
-// YES and NO Both Lead to YES!
+// COMMON CELEBRATION FUNCTION
 
-function sayYes() {
+function celebrate() {
 
-    document.getElementById("buttons")
-        .style.display = "none";
+    document.getElementById("result").style.display =
+        "block";
 
-    document.querySelector(".question")
-        .style.display = "none";
-
-    document.getElementById("result")
-        .style.display = "block";
+    document.getElementById("notification").style.display =
+        "block";
 
     document.querySelector("h1").innerHTML =
         "I Love You Too! 😘";
@@ -271,6 +330,42 @@ function sayYes() {
         setTimeout(createHeart, i * 80);
 
     }
+
+}
+
+
+// WHEN YES IS CLICKED
+
+function sayYes() {
+
+    // NO automatically becomes YES
+
+    document.getElementById("no").innerHTML =
+        "YES 💖";
+
+    document.getElementById("no").onclick =
+        sayYes;
+
+    celebrate();
+
+}
+
+
+// WHEN NO IS CLICKED
+
+function sayNo() {
+
+    // NO automatically becomes YES
+
+    document.getElementById("no").innerHTML =
+        "YES 💖";
+
+    // Both buttons now say YES
+
+    document.getElementById("no").onclick =
+        sayYes;
+
+    celebrate();
 
 }
 
